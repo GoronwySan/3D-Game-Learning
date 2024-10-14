@@ -1,2 +1,2 @@
-# 3d-
-记录学习过程
+# 3D Game Learning
+Record the Learning Process
