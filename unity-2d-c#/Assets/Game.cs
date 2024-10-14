@@ -167,6 +167,7 @@ public class Game : MonoBehaviour
         {
             if (GUI.Button(new Rect(Screen.width / 2 - 100, Screen.height / 2 + 60, 200, 50), "设置", highlightedButtonStyle))
             {
+                
                 ShowSettings();
             }
         }
@@ -293,7 +294,6 @@ public class Game : MonoBehaviour
         GUILayout.EndArea();
     }
 
-
     // 绘制游戏
     private void DrawGameUI()
     {
@@ -395,6 +395,7 @@ public class Game : MonoBehaviour
         {
             if (GUILayout.Button("返回主界面", dynamicHighlightedButtonStyle, GUILayout.Height(50 * scaleFactor)))
             {
+                selectedButtonIndex = 0;
                 ShowMainMenu();
             }
         }
@@ -402,6 +403,7 @@ public class Game : MonoBehaviour
         {
             if (GUILayout.Button("返回主界面", dynamicButtonStyle, GUILayout.Height(50 * scaleFactor)))
             {
+                selectedButtonIndex = 0;
                 ShowMainMenu();
             }
         }
@@ -413,7 +415,7 @@ public class Game : MonoBehaviour
     //管理游戏的主循环
     void Update()
     {
-        if (!gameActive && !settingsActive)
+        if (!gameActive && !settingsActive && !gameOver)
         {
             HandleMainMenuInput();  // 处理主菜单输入
         }
@@ -422,7 +424,7 @@ public class Game : MonoBehaviour
             HandleSettingsInput();  // 处理设置菜单输入
         }
         // 如果当前在游戏结束界面，允许使用键盘控制按钮选择
-        if (gameOver || !gameActive)
+        if (gameOver)
         {
             HandleKeyboardNavigation();
         }
@@ -509,6 +511,8 @@ public class Game : MonoBehaviour
             }
             else if (selectedSettingsIndex == 3)
             {
+                selectedSettingsIndex = 0;
+                settingsActive = false;
                 ShowMainMenu();  // 返回主菜单
             }
         }
@@ -518,20 +522,28 @@ public class Game : MonoBehaviour
     // 处理游戏结束界面输入
     private void HandleKeyboardNavigation()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
         {
-            selectedButtonIndex = (selectedButtonIndex - 1 + 2) % 2;  // 循环选择按钮（0和1之间循环）
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            selectedButtonIndex = (selectedButtonIndex + 1) % 2;
+            selectedButtonIndex = (selectedButtonIndex + 1) % 2;  // 循环选择按钮（0和1之间循环）
+            Debug.Log("1 " + selectedButtonIndex);
         }
         else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
         {
             if (gameOver)
             {
-                if (selectedButtonIndex == 0) StartNewGame();
-                else if (selectedButtonIndex == 1) ShowMainMenu();
+                Debug.Log("1 " + selectedButtonIndex);
+                if (selectedButtonIndex == 0)
+                {
+                    Debug.Log("3");
+                    settingsActive = false;
+                    StartNewGame();
+                }
+                else if (selectedButtonIndex == 1)
+                {
+                    settingsActive = false;
+                    Debug.Log("1");
+                    ShowMainMenu();
+                }
             }
             else
             {
