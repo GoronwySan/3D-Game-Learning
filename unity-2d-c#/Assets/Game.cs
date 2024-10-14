@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 
 public class Game : MonoBehaviour
 {
+    // Model: 存储游戏的状态和数据
     public Texture2D backgroundTexture;  // 背景纹理
     public GUIStyle textStyle;  // 自定义文本样式
     public GUIStyle buttonStyle;  // 自定义按钮样式
@@ -58,6 +59,7 @@ public class Game : MonoBehaviour
         audioSource.Play();  // 播放背景音乐
     }
 
+    // View: 绘制界面和UI
     void OnGUI()
     {
         // 获取当前屏幕宽度，动态计算缩放比例
@@ -314,7 +316,7 @@ public class Game : MonoBehaviour
         int uiTopY = startY - Mathf.RoundToInt(80 * scaleFactor);  // 设定一个距离，确保按钮和标签不会离棋盘太远
 
         // 返回主界面按钮放置在棋盘上方
-        if (GUI.Button(new Rect(startX - 80, uiTopY, 150 * scaleFactor, 50 * scaleFactor), "返回主界面", dynamicButtonStyle))
+        if (GUI.Button(new Rect(startX - 140, uiTopY, 150 * scaleFactor, 50 * scaleFactor), "返回主界面", dynamicButtonStyle))
         {
             ShowMainMenu();
         }
@@ -362,7 +364,7 @@ public class Game : MonoBehaviour
         dynamicHighlightedButtonStyle.normal.textColor = Color.yellow;
 
         // 使用GUILayout自动布局，并根据屏幕大小调整元素
-        GUILayout.BeginVertical("box", GUILayout.Width(300 * scaleFactor), GUILayout.Height(200 * scaleFactor));
+        GUILayout.BeginVertical("box", GUILayout.Width(380 * scaleFactor), GUILayout.Height(300 * scaleFactor));
 
         // 显示分数和游戏时间，动态调整字体
         GUILayout.Label("分数: " + score, dynamicTextStyle);
@@ -407,6 +409,7 @@ public class Game : MonoBehaviour
         GUILayout.EndVertical();
     }
 
+    // Controller: 处理用户输入并更新模型
     //管理游戏的主循环
     void Update()
     {
